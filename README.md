@@ -1,0 +1,2 @@
+# selenium_chousei
+seleniumを使って調整さんの出欠表を簡単に作れるプログラムです
