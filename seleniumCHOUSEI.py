@@ -20,7 +20,7 @@ eday = datetime.datetime.strptime(lines[1].strip(), '%Y-%m-%d').date()
 
 # タイトルとメモ
 title = lines[2].strip()
-memo = lines[3].strip()
+memo = "".join(lines[3:])
 
 #開始日、終了日から候補リストdayListを作成
 dayList = []
@@ -28,17 +28,18 @@ dayList = []
 for i in range((eday-sday).days + 1):
     # このループでの日をtDayとする
     tDay = sday + datetime.timedelta(days=i)
+    # tDayの曜日を変数化
+    tDate = date[tDay.weekday()]
     # 1~7限まで作るのでrange(1,8)で繰り返し
     for j in range(1,8):
         # dayListに"月/日 (曜日) ○限"というフォーマットでappend
-        dayList.append(tDay.strftime("%m/%d") + "（" + date[tDay.weekday()] + "）" + str(j) + u"限")
+        dayList.append(tDay.strftime("%m/%d") + "（" + tDate + "）" + str(j) + u"限")
 
 # firefoxを起動
 browser = webdriver.Firefox()
 # 調整さんトップページにアクセス
 browser.get("https://chouseisan.com")
-
-# name,comment,kouhoのidをもつフィールドに
+# name,comment,kouhoのidをもつフィールドにchouseiData.txtから取得したデータを入力
 browser.find_element_by_id('name').send_keys(title)
 browser.find_element_by_id('comment').send_keys(memo)
 # dayListを要素間に"\n"を入れて文字列化
